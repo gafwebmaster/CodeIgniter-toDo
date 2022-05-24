@@ -32,7 +32,7 @@ class UserModel extends Model{
             return $data;
       }
       
-      protected function listUsers(){
+      public function listUsers(){
         $query = $this->db->get("users");
         return $query->result();
       }

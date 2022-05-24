@@ -9,7 +9,7 @@ class Tasks extends BaseController
     //After login
     public function index()   
     {       
-        $data=[];  
+        $data=[]; 
         $data["allUsers"] = $this->UserModel->listUsers();
         
         echo view('header', $data);
