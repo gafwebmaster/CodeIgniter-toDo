@@ -20,5 +20,10 @@ class TaskModel extends Model{
     protected function beforeUpdate(array $data){
       $data['data']['updated_at'] = date('Y-m-d H:i:s');      
       return $data;
-    }   
+    } 
+    
+    public function listTasks(){
+      $query = $this->db->get("tasks");
+      return $query->result();
+    }
 }

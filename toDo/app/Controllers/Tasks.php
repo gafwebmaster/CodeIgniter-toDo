@@ -7,10 +7,15 @@ use App\Models\TaskModel;
 class Tasks extends BaseController
 {
     //After login
-    public function index()   
-    {       
+    public function index() 
+    {   
         $data=[]; 
-        $data["allUsers"] = $this->UserModel->listUsers();
+
+        $allUsers = new UserModel();   
+        $allTasks = new TaskModel(); 
+
+        $data["allUsers"] = $this->allUsers->listUsers();
+        $data["allTasks"] = $this->allTasks->listTasks();
         
         echo view('header', $data);
         echo view('nav');
