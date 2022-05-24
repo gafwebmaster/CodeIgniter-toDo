@@ -6,13 +6,13 @@ if(session()->get('isLoggedIn')): ?>
         <a href="/">Users list</a>
         <a href="/users/add">Add User</a>        
         <a href="/users/forgot_password">Forgot Password</a>
-        <a href="">Logs</a>
-        <a href="/users/logout">Logout</a>
-    <hr>
+        <a href="">Logs</a>        
+    |
         <strong>Users</strong>
-        <a href="/users/profile">Profile</a>
+        <a href="/user/profile">Profile</a>
         <a href="/tasks">Tasks</a>
         <a href="/task/add">Add Task</a>
+        <a href="/users/logout">Logout</a>
     <hr>
 <?php else: ?>
     <hr>

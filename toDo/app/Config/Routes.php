@@ -29,30 +29,69 @@ $routes->setAutoRoute(true);
  * --------------------------------------------------------------------
  */
 
-// We get a performance increase by specifying the default
-// route since we don't have to scan directories.
+//Login page
 $routes->add('/', 'Users::index');
-$routes->add('users', 'Users::listUsers');
-$routes->add('users/profile', 'Users::profile');
-$routes->add('user/forgot_password', 'Users::forgotPassword');
-$routes->add('user/reset_password', 'Users::resetPassword');
-$routes->match(['get','post'], 'user/add', 'Users::addUser');
-$routes->add('user/(:num)', 'Users::userDetails');
-$routes->match(['get','post'],'user/update', 'Users::userUpdate');
-$routes->add('user/delete/(:num)', 'Users::userDelete');
+
+//After login
+$routes->add('tasks', 'Tasks::index');
+
+//Logout
 $routes->add('users/logout', 'Users::logout');
 
-$routes->add('tasks', 'Tasks::index');
-$routes->add('task/add', 'Tasks::addTask');
-$routes->add('task/(:num)', 'Tasks::taskDetails');
-$routes->add('task/update/(:num)', 'Tasks::taskUpdate');
+
+//***********Manager can***********
+//See all the users
+$routes->add('users', 'Users::listUsers');
+
+//Add new user
+$routes->match(['get','post'], 'user/add', 'Users::addUser', ['filter' => 'noauth']);
+
+//See a specified user details
+$routes->add('users/(:num)', 'Users::userDetails');
+
+//Update a user details
+$routes->match(['get','post'],'user/update', 'Users::userUpdate');
+
+//Delete a user
+$routes->add('users/delete/(:num)', 'Users::userDelete');
+
+//Delete a task
 $routes->add('task/delete/id', 'Tasks::taskDelete');
+
+//Export a tasks list
 $routes->add('tasks/export', 'Tasks::tasksExport');
+
+//See all users log details
+$routes->add('logs', 'Logs::index');
+
+
+
+//***********User can**************
+//See his/her profile details
+$routes->add('user/profile', 'Users::profile', ['filter' => 'auth']);
+
+//Recover his/her password
+$routes->add('users/forgot_password', 'Users::forgotPassword');
+$routes->add('users/reset_password', 'Users::resetPassword');
+
+//Add a task
+$routes->match(['get','post'], 'task/add', 'Tasks::addTask');
+
+//See a task
+$routes->add('task/(:num)', 'Tasks::taskDetails');
+
+//Update a task
+$routes->add('task/update/(:num)', 'Tasks::taskUpdate');
+
+//Add a task
 $routes->add('task_message/add', 'Tasks::taskMessageAdd');
+
+//Update a task message
 $routes->add('task_message/update/(:num)', 'Tasks::taskMessageUpdate');
+
+//Delete a task message
 $routes->add('task_message/delete/(:num)', 'Tasks::taskMessageDelete');
 
-$routes->add('logs', 'Logs::index');
 
 /*
  * --------------------------------------------------------------------

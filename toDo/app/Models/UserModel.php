@@ -30,5 +30,10 @@ class UserModel extends Model{
         if(isset($data['data']['password']))
           $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);    
             return $data;
-      }      
+      }
+      
+      protected function listUsers(){
+        $query = $this->db->get("users");
+        return $query->result();
+      }
 }

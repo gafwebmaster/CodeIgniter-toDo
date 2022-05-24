@@ -5,6 +5,7 @@ use App\Models\UserModel;
 
 class Users extends BaseController
 {
+    //Login
     public function index()
     {
         $data = [];
@@ -25,12 +26,13 @@ class Users extends BaseController
             if (! $this->validate($rules, $errors)) {
 				$data['validation'] = $this->validator;
 			} else {
-                $model = new UserModel();
+                $model = new UserModel();               
                 $user = $model->where('email', $this->request->getVar('email'))
-                                ->first();
-                $this->setUserSession($user);                
+                                ->first();               
+
+                $this->setUserSession($user);              
                 
-				return redirect()->to('/dashboard');
+				return redirect()->to('/tasks');
             }
         }
         
@@ -45,12 +47,14 @@ class Users extends BaseController
             'id' => $user['id'],
             'name' => $user['name'],
             'email' => $user['email'],
+            'level_access' => $user['level_access'],
             'isLoggedIn' => true
         ];
         session()->set($data);
     }
 
-    public function addUser(){        
+    public function addUser(){  
+        $data = [];      
         helper(['form']);
 
         if ($this->request->getMethod() == 'post') {
