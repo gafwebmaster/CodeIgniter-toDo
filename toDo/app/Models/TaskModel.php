@@ -23,7 +23,10 @@ class TaskModel extends Model{
     } 
     
     public function listTasks(){
-      $query = $this->db->get("tasks");
-      return $query->result();
+
+      $query   = $this->db->query('SELECT * FROM tasks');
+      $results = $query->getResult();
+      
+      return $results;
     }
 }

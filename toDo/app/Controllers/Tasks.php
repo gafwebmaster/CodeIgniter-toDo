@@ -1,22 +1,18 @@
 <?php
-
 namespace App\Controllers;
-use App\Models\UserModel;
 use App\Models\TaskModel;
-
 class Tasks extends BaseController
 {
     //After login
     public function index() 
     {   
         $data=[]; 
-
-        $allUsers = new UserModel();   
-        $allTasks = new TaskModel(); 
-
-        $data["allUsers"] = $this->allUsers->listUsers();
-        $data["allTasks"] = $this->allTasks->listTasks();
         
+        $model = new TaskModel();               
+        $tasks = $model->listTasks();      
+       
+        $data["allTasks"] = $tasks;
+
         echo view('header', $data);
         echo view('nav');
         echo view('pages/tasks');
