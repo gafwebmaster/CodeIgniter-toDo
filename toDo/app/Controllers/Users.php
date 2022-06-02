@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 use App\Models\UserModel;
 
@@ -10,38 +9,33 @@ class Users extends BaseController
     {
         $data = [];
         helper(['form']);
-
         if ($this->request->getMethod() == 'post') {
             $rules = [                
                 'email' => 'required|min_length[6]|max_length[50]|valid_email',                
                 'password' => 'required|min_length[2]|max_length[85]|validateUser[email,password]'
             ];
-
             $errors = [
                 'password' => [
                     'validateUser' => 'Email or Password don\'t match'
                 ]
             ];
-
             if (! $this->validate($rules, $errors)) {
 				$data['validation'] = $this->validator;
 			} else {
                 $model = new UserModel();               
                 $user = $model->where('email', $this->request->getVar('email'))
-                                ->first();               
-
+                              ->first();              
                 $this->setUserSession($user);              
-                
 				return redirect()->to('/tasks');
             }
-        }
-        
+        }        
         echo view('header', $data);
         echo view('nav');
         echo view('pages/login');
         echo view('footer');
     }
 
+    //Set user session
     private function setUserSession($user){
         $data = [
             'id' => $user['id'],
@@ -53,10 +47,10 @@ class Users extends BaseController
         session()->set($data);
     }
 
+    //Add a new user
     public function addUser(){  
         $data = [];      
         helper(['form']);
-
         if ($this->request->getMethod() == 'post') {
             $rules = [
                 'name' => 'required|min_length[3]|max_length[20]',
@@ -65,7 +59,6 @@ class Users extends BaseController
                 'password' => 'required|min_length[2]|max_length[255]',
                 'password_confirm' => 'matches[password]'
             ];
-
             if (! $this->validate($rules)) {
 				$data['validation'] = $this->validator;
 			} else {
@@ -76,25 +69,19 @@ class Users extends BaseController
                     'phone' => $this->request->getVar('phone'),
                     'password' => $this->request->getVar('password')
                 ]; 
-                               
-                //print_r($newData); die;
-
                 $model->insert($newData);
-
  				$session = session();
 				$session->setFlashdata('success', 'Successful Registration');
 				return redirect()->to('/');
             }           
-        }
-        //echo "<pre>";
-        
-
+        }        
         echo view('header', $data);
         echo view('nav');
         echo view('pages/addUser');
         echo view('footer');
     }
 
+    //View a profile
     public function profile(){
         $data = [];
         helper(['form']);
@@ -114,7 +101,6 @@ class Users extends BaseController
                 $data['validation'] = $this->validator;
             } else {
                 $model = new UserModel();  
-                
                 $newData = [
                     'id' => session()->get('id'),
                     'name' => $this->request->getPost('name'),
@@ -122,10 +108,7 @@ class Users extends BaseController
                 if($this->request->getPost('password') != ''){
                     $newData['password'] = $this->request->getPost('password');
                 }
-
                 $model->save($newData);
-
- 				
 				session()->setFlashdata('success', 'Successful updated');
 				return redirect()->to('/users/profile');
             }           
@@ -137,6 +120,7 @@ class Users extends BaseController
         echo view('footer');      
     }
 
+    //Logout
     public function logout(){
         session()->destroy();
         return redirect()->to('/');

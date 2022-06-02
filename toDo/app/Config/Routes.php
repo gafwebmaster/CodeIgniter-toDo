@@ -86,6 +86,9 @@ $routes->add('task/update/(:num)', 'Tasks::taskUpdate');
 //Add a task
 $routes->add('task_message/add', 'Tasks::taskMessageAdd');
 
+//Mark a task as "Done"
+$routes->add('tasks/markAsDone/(:num)', 'Tasks::markAsDone/$1');
+
 //Update a task message
 $routes->add('task_message/update/(:num)', 'Tasks::taskMessageUpdate');
 
