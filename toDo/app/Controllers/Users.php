@@ -81,39 +81,64 @@ class Users extends BaseController
         echo view('footer');
     }
 
+    //List users
+    public function listUsers(){  
+        $users=[];
+        $userModel = new UserModel();
+        $users = $userModel->listUsers();
+
+        echo view('header', array('users' => $users));
+        echo view('nav');
+        echo view('pages/users');
+        echo view('footer');
+    }
+
+    //Edit a user
+    public function userUpdate(){
+
+    }
+
     //View a profile
-    public function profile(){
+    public function profile($userId = NULL){
+    
         $data = [];
         helper(['form']);
         $model = new UserModel();
 
         if ($this->request->getMethod() == 'post') {
+
             $rules = [
-                'name' => 'required|min_length[3]|max_length[20]'               
+                'name' => 'required|min_length[3]|max_length[20]',
+                'email' => 'required|trim|valid_email',
+                'phone' => 'required|trim|min_length[9]|max_length[15]'
             ];
 
-            if (! $this->request->getPost('password') !='') {                
+            if ($this->request->getPost('password')) {
                 $rules['password'] = 'required|min_length[2]|max_length[255]';
                 $rules['password_confirm'] = 'matches[password]';
-			} 
+			}
 
             if(! $this->validate($rules)){
                 $data['validation'] = $this->validator;
             } else {
                 $model = new UserModel();  
                 $newData = [
-                    'id' => session()->get('id'),
+                    'id' => $userId,
                     'name' => $this->request->getPost('name'),
+                    'email' => $this->request->getPost('email'),
+                    'phone' => $this->request->getPost('phone'),
+                    // 'password' => $this->request->getPost('password'),
+                    // 'password_confirm' => $this->request->getPost('password_confirm'),
                 ];
                 if($this->request->getPost('password') != ''){
                     $newData['password'] = $this->request->getPost('password');
                 }
                 $model->save($newData);
 				session()->setFlashdata('success', 'Successful updated');
-				return redirect()->to('/users/profile');
+				return redirect()->to('/users');
             }           
         } 
-        $data['user'] = $model->where('id', session()->get('id'))->first();
+        $data['user'] = $model->where('id', $userId)->first();
         echo view('header', $data);
         echo view('nav');
         echo view('pages/profile');

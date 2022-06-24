@@ -8,7 +8,7 @@
 	<?= session()->get('success') ?>
 <?php endif ?>
 
-<form action="/users/profile" method="post">
+<form action="/users/profile/<?= $user['id'] ?>" method="post">
 	<input type="text" name="name" value="<?= $user['name'] ?>" >
 	<input type="text" name="email" value="<?= $user['email'] ?>" >
 	<input type="text" name="phone" value="<?= $user['phone'] ?>" >

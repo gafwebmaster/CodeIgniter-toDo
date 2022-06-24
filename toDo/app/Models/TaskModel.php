@@ -4,14 +4,13 @@ use CodeIgniter\Model;
 
 class TaskModel extends Model{
   protected $table = 'tasks';
-  protected $allowedFields = ['task', 'task_date', 'status', 'frecvency', 'user_id', 'created_at', 'updated_at'];
+  protected $allowedFields = ['company', 'status', 'frecvency', 'user_id', 'created_at', 'updated_at'];
   protected $beforeInsert = ['beforeInsert'];
   protected $beforeUpdate = ['beforeUpdate'];
 
   protected function beforeInsert(array $data){
       $data['data']['created_at'] = date('Y-m-d H:i:s');
       $data['data']['status'] = "new";
-      $data['data']['user_id'] = session()->get('id');        
       return $data;
     }
   
@@ -42,5 +41,9 @@ class TaskModel extends Model{
     // Mark a task as done 
     public function markAsDone($idIask){
       $this->db->query("UPDATE tasks SET status='done' WHERE id = $idIask"); 
+    }
+
+    public function addMessage($message){
+      $this->db->query("INSERT INTO messages "); 
     }
 }

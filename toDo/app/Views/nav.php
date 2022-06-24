@@ -3,7 +3,7 @@ $uri = service('uri');
 if(session()->get('isLoggedIn')): ?>
     <hr>
         <strong>Manager</strong>
-        <a href="/">Users list</a>
+        <a href="/users">Users list</a>
         <a href="/users/add">Add User</a>        
         <a href="/users/forgot_password">Forgot Password</a>
         <a href="">Logs</a>        

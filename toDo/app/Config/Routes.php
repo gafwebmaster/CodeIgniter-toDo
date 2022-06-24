@@ -46,17 +46,17 @@ $routes->add('users', 'Users::listUsers');
 //Add new user
 $routes->match(['get','post'], 'user/add', 'Users::addUser', ['filter' => 'noauth']);
 
-//See a specified user details
-$routes->add('users/(:num)', 'Users::userDetails');
-
-//Update a user details
-$routes->match(['get','post'],'user/update', 'Users::userUpdate');
+//See his/her profile details
+$routes->match(['get','post'], 'user/profile/(:num)', 'Users::profile/$1', ['filter' => 'auth']);
 
 //Delete a user
 $routes->add('users/delete/(:num)', 'Users::userDelete');
 
 //Delete a task
 $routes->add('task/delete/id', 'Tasks::taskDelete');
+
+//Add a message task
+$routes->add('task/addMessage', 'Tasks::addMessage');
 
 //Export a tasks list
 $routes->add('tasks/export', 'Tasks::tasksExport');
@@ -67,8 +67,6 @@ $routes->add('logs', 'Logs::index');
 
 
 //***********User can**************
-//See his/her profile details
-$routes->add('user/profile', 'Users::profile', ['filter' => 'auth']);
 
 //Recover his/her password
 $routes->add('users/forgot_password', 'Users::forgotPassword');

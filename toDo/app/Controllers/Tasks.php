@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\TaskModel;
+use App\Models\UserModel;
 
 class Tasks extends BaseController
 {
@@ -8,9 +9,12 @@ class Tasks extends BaseController
     public function index() 
     {   
         $data=[];         
-        $model = new TaskModel();               
-        $tasks = $model->listTasks();      
+        $model = new TaskModel();  
+        $userModel = new UserModel();             
+        $tasks = $model->listTasks();  
+        $users = $userModel->listUsers();
         $data["allTasks"] = $tasks;
+        $data["users"] = $users;
         echo view('header');
         echo view('nav');
         echo view('pages/tasks', array('data' => $data));
@@ -24,18 +28,21 @@ class Tasks extends BaseController
         if ($this->request->getMethod() == 'post') {
             $rules = [
                 'task' => 'required|min_length[5]|max_length[1000]'
-            ];            
+            ];    
+
             if (! $this->validate($rules)) {
 				$data['validation'] = $this->validator;
 			} else {                
-                $model = new TaskModel();
+                $model = new TaskModel();               
+                $userId = $this->request->getVar('assignTo') ?: session()->get('id');
                 $newData = [                    
                     'task' => $this->request->getVar('task'),
                     'task_date' => $this->request->getVar('taskDate'),
                     'status' => 'new',
                     'frecvency' => $this->request->getVar('frecvency'),
-                    'user_id' => session()->get('id'),
-                ];                
+                    'user_id' => $userId      
+                ];
+
                 $model->insert($newData);
  				$session = session();
 				$session->setFlashdata('success', 'Successful Registration');
@@ -66,5 +73,16 @@ class Tasks extends BaseController
             $model->markAsDone($taskId);
         }
         return redirect()->to('/tasks');
+    }
+
+    public function addMessage(){
+        $model = new TaskModel();
+        $message = [                    
+            'taskMessage' => $this->request->getVar('taskMessage'),
+            'taskDate' => $this->request->getVar('taskDate'),
+            'taskId' => $this->request->getVar('taskId')     
+        ];
+
+        //$model->
     }
 }

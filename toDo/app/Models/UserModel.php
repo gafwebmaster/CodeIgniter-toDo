@@ -30,7 +30,12 @@ class UserModel extends Model{
       }
       
       public function listUsers(){
-        $query = $this->db->get("users");
-        return $query->result();
+        //$query = $this->db->get("users");
+        //return $query->result();
+
+
+      $query = $this->db->query("SELECT * FROM users");
+      $results = $query->getResult();
+       return $results;
       }
 }
