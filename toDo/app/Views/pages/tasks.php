@@ -33,7 +33,6 @@
             if($task->status != 'done'){           
                 $cleanArr[$task->user_id]['company'][$task->id]['company']=$task->company;
                 //$cleanArr[$task->user_id]['company'][$task->id]['task_date']=$task->task_date;
-                
             }
         }else{          
             $cleanArr[$task->user_id]['name'] = $task->name;            
@@ -43,7 +42,7 @@
             }
         }
       }
-
+      echo "<pre>";
       print_r($cleanArr); die;
     }
     foreach ($cleanArr as $record){
